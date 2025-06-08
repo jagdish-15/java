@@ -38,9 +38,9 @@ jobs:
 
       - name: Create issue if tests are not synced
         if: ${{ !contains(steps.sync_test.outputs.output, 'Every exercise has up-to-date tests!') }}
-        uses: peter-evans/create-issue@v5
+        uses: peter-evans/create-issue-from-file@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          title: "🚨 configlet sync --tests found unsynced tests"
-          body: ${{ steps.sync_test.outputs.output }}
-          update-existing: true
+          title: "🚨 configlet sync --test found unsynced tests"
+          content-filepath: .github/auto-sync/sync-test-output.txt
+          
