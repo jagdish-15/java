@@ -34,7 +34,6 @@ jobs:
 
   check-test-sync:
     runs-on: ubuntu-latest
-    needs: sync-docs-metadata
 
     steps:
       - name: Check if second job should run
