@@ -41,7 +41,7 @@ jobs:
           echo "EXECUTE_SECOND_JOB=${{ env.EXECUTE_SECOND_JOB }}"
           if [[ "${{ env.EXECUTE_SECOND_JOB }}" == 'false' ]]; then
             echo "Skipping test sync job as EXECUTE_SECOND_JOB is not true"
-            exit 0
+            exit 1
           fi
 
       - name: Checkout repository
