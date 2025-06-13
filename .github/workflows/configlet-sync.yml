@@ -39,7 +39,7 @@ jobs:
       - name: Check if second job should run
         run: |
           echo "EXECUTE_SECOND_JOB=${{ env.EXECUTE_SECOND_JOB }}"
-          if [[ "${{ env.EXECUTE_SECOND_JOB }}" != "true" ]]; then
+          if [[ "${{ env.EXECUTE_SECOND_JOB }}" == 'false' ]]; then
             echo "Skipping test sync job as EXECUTE_SECOND_JOB is not true"
             exit 0
           fi
