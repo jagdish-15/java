@@ -52,7 +52,8 @@ jobs:
       - name: Run configlet sync for test and capture output
         id: sync_test
         run: |
-          configlet_raw_output="$(./bin/configlet sync --tests)"
+          configlet_raw_output="$(./bin/configlet sync --tests 2>&1)"
+          echo "$configlet_raw_output"
 
           printf "configlet output:\n%s\n" "$configlet_raw_output"
           mkdir -p temp
