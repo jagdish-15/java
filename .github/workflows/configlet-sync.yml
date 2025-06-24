@@ -55,6 +55,7 @@ jobs:
           mkdir -p temp
           printf '```\n%s\n```\n' "$configlet_raw_output" > temp/sync-test-output.txt
           printf 'output<<EOF\n%s\nEOF\n' "$configlet_raw_output" > "$GITHUB_OUTPUT"
+          
       - name: Find existing issue for test sync
         id: find_issue
         if: ${{ !contains(steps.sync_test.outputs.output, 'Every exercise has up-to-date tests!') }}
@@ -71,6 +72,7 @@ jobs:
             echo "Found existing issue number: $ISSUE_NUMBER for title: '$ISSUE_TITLE'"
             echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
           fi
+          
       - name: Create or Update issue if tests are not synced
         if: ${{ !contains(steps.sync_test.outputs.output, 'Every exercise has up-to-date tests!') }}
         uses: peter-evans/create-issue-from-file@v5
