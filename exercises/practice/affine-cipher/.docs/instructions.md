@@ -12,12 +12,6 @@ Although all monoalphabetic ciphers are weak, the affine cipher is much stronger
 
 The encryption function is:
 
-```text
-E(x) = (ai + b) mod m
-```
-
-Where:
-
 - `i` is the letter's index from `0` to the length of the alphabet - 1.
 - `m` is the length of the alphabet.
   For the Latin alphabet `m` is `26`.
