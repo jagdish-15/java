@@ -52,10 +52,7 @@ jobs:
       - name: Run configlet sync for test and capture output
         id: sync_test
         run: |
-          configlet_raw_output="$(./bin/configlet sync --tests 2>&1 || true)"
-
-          printf "configlet output:\n%s\n" "$configlet_raw_output"
-          printf 'output<<EOF\n%s\nEOF\n' "$configlet_raw_output" > "$GITHUB_OUTPUT"
+          printf 'output<<EOF\n%s\nEOF\n' "$(./bin/configlet sync --tests 2>&1 || true)" > "$GITHUB_OUTPUT"
 
       - name: Find existing issue for test sync
         id: find_issue
