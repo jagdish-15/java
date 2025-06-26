@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Fetch configlet
         run: ./bin/fetch-configlet
@@ -21,7 +21,7 @@ jobs:
         run: ./bin/configlet sync --docs --metadata --filepaths -u -y
 
       - name: Create pull request if changes
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "🤖 Auto-sync docs, metadata, and filepaths"
@@ -44,7 +44,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Fetch configlet
         run: ./bin/fetch-configlet
@@ -57,32 +57,31 @@ jobs:
           printf "configlet output:\n%s\n" "$configlet_raw_output"
           printf 'output<<EOF\n%s\nEOF\n' "$configlet_raw_output" > "$GITHUB_OUTPUT"
 
-      - name: Find existing issue for test sync
+      - name: Format test sync output and find existing issue
         id: find_issue
         if: ${{ !contains(steps.sync_test.outputs.output, 'Every exercise has up-to-date tests!') }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mkdir -p temp
-          printf '```\n%s\n```\n' "${{ steps.sync_test.outputs.output }}" > temp/sync-test-output.txt
+          printf '```\n%s\n```\n' "${{ steps.sync_test.outputs.output }}" > /tmp/sync-test-output.txt
 
           ISSUE_TITLE="🚨 configlet sync --test found unsynced tests"
           ISSUE_DATA=$(gh issue list --search "is:issue is:open in:title \"${ISSUE_TITLE}\" repo:${{ github.repository }}" --json number,title --jq '.[0]')
 
           if [[ -z "$ISSUE_DATA" ]]; then
             printf "No open issue found with title: '%s'. A new one will be created.\n" "${ISSUE_TITLE}"
-            echo "issue_number=" >> $GITHUB_OUTPUT
+            echo "issue_number=" >> "$GITHUB_OUTPUT"
           else
             ISSUE_NUMBER=$(jq -r '.number' <<< "$ISSUE_DATA")
             echo "Found existing issue number: $ISSUE_NUMBER for title: '$ISSUE_TITLE'"
-            echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+            echo "issue_number=$ISSUE_NUMBER" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Create or Update issue if tests are not synced
         if: ${{ !contains(steps.sync_test.outputs.output, 'Every exercise has up-to-date tests!') }}
-        uses: peter-evans/create-issue-from-file@v5
+        uses: peter-evans/create-issue-from-file@e8ef132d6df98ed982188e460ebb3b5d4ef3a9cd
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: "🚨 configlet sync --test found unsynced tests"
-          content-filepath: temp/sync-test-output.txt
+          content-filepath: /tmp/sync-test-output.txt
           issue-number: ${{ steps.find_issue.outputs.issue_number || '' }}
