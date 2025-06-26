@@ -53,7 +53,7 @@ jobs:
         id: sync_test
         continue-on-error: true
         run: |
-          set e+
+          set +e
           configlet_raw_output="$(./bin/configlet sync --tests 2>&1)"
           exit_code=$?
           set -e
