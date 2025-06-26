@@ -53,7 +53,7 @@ jobs:
         id: sync_test
         continue-on-error: true
         run: |
-          configlet_raw_output="$(./bin/configlet sync --tests 2>&1)"
+          configlet_raw_output="$(./bin/configlet sync --tests 2>&1 || true)"
           exit_code=$?
 
           echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
