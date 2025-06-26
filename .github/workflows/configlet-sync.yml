@@ -54,8 +54,11 @@ jobs:
         continue-on-error: true
         run: |
           output_file=/tmp/configlet_output.txt
-          ./bin/configlet sync --tests > "$output_file" 2>&1 || true
+
+          set +e
+          ./bin/configlet sync --tests > "$output_file" 2>&1
           exit_code=$?
+          set -e
       
           configlet_raw_output="$(cat "$output_file")"
       
