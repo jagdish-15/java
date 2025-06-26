@@ -1,6 +1,7 @@
 name: Configlet Auto Sync
 
 on:
+  workflow_dispatch:
   workflow_call:
 
 jobs:
