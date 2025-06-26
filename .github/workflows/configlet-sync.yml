@@ -53,9 +53,12 @@ jobs:
         id: sync_test
         continue-on-error: true
         run: |
-          configlet_raw_output="$(./bin/configlet sync --tests 2>&1)"
+          output_file=/tmp/configlet_output.txt
+          ./bin/configlet sync --tests > "$output_file" 2>&1
           exit_code=$?
-
+      
+          configlet_raw_output="$(cat "$output_file")"
+      
           echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
           printf "output<<EOF\n%s\nEOF\n" "$configlet_raw_output" >> "$GITHUB_OUTPUT"
 
