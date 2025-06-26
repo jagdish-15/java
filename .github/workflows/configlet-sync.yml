@@ -56,7 +56,7 @@ jobs:
           set e+
           configlet_raw_output="$(./bin/configlet sync --tests 2>&1)"
           exit_code=$?
-          set e-
+          set -e
 
           echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
           printf "output<<EOF\n%s\nEOF\n" "$configlet_raw_output" >> "$GITHUB_OUTPUT"
