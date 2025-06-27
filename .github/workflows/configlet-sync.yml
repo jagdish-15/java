@@ -52,11 +52,12 @@ jobs:
         id: sync_test
         run: |
           if configlet_raw_output="$(./bin/configlet sync --tests)"; then
-              printf "unsynced_tests_found=false\n" >> "$GITHUB_OUTPUT"
+              unsynced_tests_found="false"
           else
-              printf "unsynced_tests_found=true\n" >> "$GITHUB_OUTPUT"
-              printf "output<<EOF\n%s\nEOF\n" "$configlet_raw_output" >> "$GITHUB_OUTPUT"
+              unsynced_tests_found="true"
           fi
+          printf "unsynced_tests_found=%s\n" "$unsynced_tests_found" >> "$GITHUB_OUTPUT"
+          printf "output<<EOF\n%s\nEOF\n" "$configlet_raw_output" >> "$GITHUB_OUTPUT"
           printf "configlet output:\n%s\n" "$configlet_raw_output"
 
       - name: Format test sync output and find existing issue
