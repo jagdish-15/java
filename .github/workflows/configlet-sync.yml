@@ -51,11 +51,8 @@ jobs:
       - name: Run configlet sync for test and capture output
         id: sync_test
         run: |
-          if configlet_raw_output="$(./bin/configlet sync --tests)"; then
-              unsynced_tests_found="false"
-          else
-              unsynced_tests_found="true"
-          fi
+          unsynced_tests_found="false"
+          configlet_raw_output="$(./bin/configlet sync --tests)" || unsynced_tests_found="true"
           printf "unsynced_tests_found=%s\n" "$unsynced_tests_found" >> "$GITHUB_OUTPUT"
           printf "output<<EOF\n%s\nEOF\n" "$configlet_raw_output" >> "$GITHUB_OUTPUT"
           printf "configlet output:\n%s\n" "$configlet_raw_output"
