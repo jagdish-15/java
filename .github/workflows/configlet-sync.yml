@@ -50,17 +50,18 @@ jobs:
 
       - name: Run configlet sync for test and capture output
         id: sync_test
-        shell: bash {0}
         run: |
-          configlet_raw_output="$(./bin/configlet sync --tests)"
-          exit_code=$?
-          printf "exit_code=%d\n" "$exit_code" >> "$GITHUB_OUTPUT"
-          printf "output<<EOF\n%s\nEOF\n" "$configlet_raw_output" >> "$GITHUB_OUTPUT"
+          if configlet_raw_output="$(./bin/configlet sync --tests)"; then
+              printf "unsynced_tests_found=false\n" >> "$GITHUB_OUTPUT"
+          else
+              printf "unsynced_tests_found=true\n" >> "$GITHUB_OUTPUT"
+              printf "output<<EOF\n%s\nEOF\n" "$configlet_raw_output" >> "$GITHUB_OUTPUT"
+          fi
           printf "configlet output:\n%s\n" "$configlet_raw_output"
 
       - name: Format test sync output and find existing issue
         id: find_issue
-        if: ${{ steps.sync_test.outputs.exit_code != 0 }}
+        if: ${{ steps.sync_test.outputs.unsynced_tests_found }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -79,7 +80,7 @@ jobs:
           fi
 
       - name: Create or Update issue if tests are not synced
-        if: ${{ steps.sync_test.outputs.exit_code != 0 }}
+        if: ${{ steps.sync_test.outputs.unsynced_tests_found }}
         uses: peter-evans/create-issue-from-file@e8ef132d6df98ed982188e460ebb3b5d4ef3a9cd
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
