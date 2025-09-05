@@ -8,6 +8,9 @@ import java.util.Arrays;
 
 public class OpticalCharacterReaderTest {
 
+
+
+    
     @Test
     public void testReaderRecognizesSingle0() {
         String parsedInput = new OpticalCharacterReader().parse(Arrays.asList(
