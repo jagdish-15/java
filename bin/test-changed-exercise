@@ -41,6 +41,4 @@ for dir in $changed_exercises; do
   elif [[ $dir == exercises/concept/* ]]; then
     ./exercises/gradlew -p exercises ":concept:$slug:test"
   fi
-
-  echo
 done
