@@ -35,6 +35,13 @@ public class AllergiesTest {
         assertThat(allergies.isAllergicTo(Allergen.EGGS)).isTrue();
     }
 
+
+
+
+
+
+
+    
     @Disabled("Remove to run test")
     @Test
     @DisplayName("allergic to something, but not eggs")
