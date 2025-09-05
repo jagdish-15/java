@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# Fetch base branch to compare against
+git fetch origin main
+
+# Get changed files in this PR
+changed_files=$(git diff --name-only origin/main...HEAD)
+
+# Extract unique exercise directories (concept/*/<slug> or practice/*/<slug>)
+changed_exercises=$(echo "$changed_files" | \
+  grep -E '^exercises/(practice|concept)/[^/]+/.*\.(java|json|gradle)$' | \
+  cut -d/ -f1-3 | sort -u)
+
+if [ -z "$changed_exercises" ]; then
+  echo "No relevant exercises changed, skipping tests."
+  exit 0
+fi
+
+# Source the original script so we can reuse verify_exercise
+source ./bin/test-with-test-runner
+
+# Run verify_exercise for each changed exercise
+for dir in $changed_exercises; do
+  slug=$(basename "$dir")
+  if [[ $dir == exercises/practice/* ]]; then
+    echo "Checking $slug (practice)..."
+    verify_exercise "$dir" "example" "practice"
+  elif [[ $dir == exercises/concept/* ]]; then
+    echo "Checking $slug (concept)..."
+    verify_exercise "$dir" "exemplar" "concept"
+  fi
+done
+
+exit ${exit_code}
