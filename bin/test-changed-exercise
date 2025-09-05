@@ -23,22 +23,20 @@ if [ -z "$changed_exercises" ]; then
   exit 0
 fi
 
-echo ""
+printf "\n"
 echo "Changed exercises detected:"
 echo "$changed_exercises"
-echo "----------------------------------------"
-echo ""
+printf "\n----------------------------------------\n"
 
 # Run tests for each changed exercise
 for dir in $changed_exercises; do
   slug=$(basename "$dir")
-  echo ""
+  printf "\n"
   echo "=== Running tests for $slug ==="
   if [[ $dir == exercises/practice/* ]]; then
     ./exercises/gradlew -p exercises ":practice:$slug:test"
   elif [[ $dir == exercises/concept/* ]]; then
     ./exercises/gradlew -p exercises ":concept:$slug:test"
   fi
-  echo ""
-  echo "----------------------------------------"
+  printf "\n----------------------------------------\n"
 done
