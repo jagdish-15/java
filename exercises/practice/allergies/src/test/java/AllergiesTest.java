@@ -9,6 +9,11 @@ public class AllergiesTest {
 
     // Testing for eggs allergy
 
+
+
+
+
+    
     @Test
     @DisplayName("not allergic to anything")
     public void eggsNotAllergicToAnything() {
