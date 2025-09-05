@@ -11,12 +11,6 @@ public class BaseConverterTest {
 
 
 
-
-
-
-
-
-n
     @Test
     @DisplayName("single bit one to decimal")
     public void testSingleBitOneToDecimal() {
