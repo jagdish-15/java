@@ -25,24 +25,15 @@ fi
 
 echo "Changed exercises detected:"
 echo "$changed_exercises"
-echo
 
-# Root Gradle wrapper
-GRADLE_WRAPPER="./gradlew"
-
-# Verify each changed exercise
+# Run tests for each changed exercise
 for dir in $changed_exercises; do
   slug=$(basename "$dir")
-  # Convert path to Gradle subproject notation: exercises:practice:allergies
-  gradle_project=$(echo "$dir" | tr / :)
-
-  echo "=== Running tests for $slug ==="
-  if [[ $dir == exercises/practice/* || $dir == exercises/concept/* ]]; then
-    $GRADLE_WRAPPER ":$gradle_project:test"
-  else
-    echo "Skipping unknown directory: $dir"
+  if [[ $dir == exercises/practice/* ]]; then
+    echo "=== Running tests for $slug ==="
+    ./exercises/gradlew -p exercises ":practice:$slug:test"
+  elif [[ $dir == exercises/concept/* ]]; then
+    echo "=== Running tests for $slug ==="
+    ./exercises/gradlew -p exercises ":concept:$slug:test"
   fi
-  echo
 done
-
-echo "All changed exercises tested."
