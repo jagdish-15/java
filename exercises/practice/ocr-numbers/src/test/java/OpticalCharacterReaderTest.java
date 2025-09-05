@@ -10,9 +10,6 @@ public class OpticalCharacterReaderTest {
 
 
 
-
-
-
     
     @Test
     public void testReaderRecognizesSingle0() {
