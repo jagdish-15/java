@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-# Determine the base branch of the PR
+# Determine base branch (main for push, PR base for pull_request)
 BASE_BRANCH=${GITHUB_BASE_REF:-main}
 
 # Fetch full history for proper diff
 git fetch origin "$BASE_BRANCH"
 
-# Compute merge base
+# Compute merge base to compare changes
 MERGE_BASE=$(git merge-base HEAD origin/$BASE_BRANCH)
 
 # Get changed files relative to merge base
 changed_files=$(git diff --name-only "$MERGE_BASE" HEAD)
 
-# Extract unique exercise directories
+# Extract unique exercise directories (practice/*/<slug> or concept/*/<slug>)
 changed_exercises=$(echo "$changed_files" | \
   grep -E '^exercises/(practice|concept)/[^/]+/.+\.(java|json|gradle)$' | \
   cut -d/ -f1-3 | sort -u)
@@ -23,19 +23,22 @@ if [ -z "$changed_exercises" ]; then
   exit 0
 fi
 
-# Source original verify_exercise script
-source ./bin/test-with-test-runner
+echo "Changed exercises detected:"
+echo "$changed_exercises"
+echo
 
-# Run verify_exercise for each changed exercise
+# Run tests for each changed exercise
+exit_code=0
 for dir in $changed_exercises; do
   slug=$(basename "$dir")
-  if [[ $dir == exercises/practice/* ]]; then
-    echo "Checking $slug (practice)..."
-    verify_exercise "$dir" "example" "practice"
-  elif [[ $dir == exercises/concept/* ]]; then
-    echo "Checking $slug (concept)..."
-    verify_exercise "$dir" "exemplar" "concept"
+  echo "=== Running tests for $slug ==="
+
+  # Run Gradle test for this exercise
+  if [[ -f "$dir/build.gradle" || -f "$dir/build.gradle.kts" ]]; then
+    ./gradlew --continue -p "$dir" test || exit_code=$?
+  else
+    echo "No build.gradle found for $slug, skipping..."
   fi
 done
 
-exit ${exit_code:-0}
+exit $exit_code
