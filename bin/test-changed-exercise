@@ -1,19 +1,13 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-# Determine base branch (main for push, PR base for pull_request)
+docker pull exercism/java-test-runner
+
 BASE_BRANCH=${GITHUB_BASE_REF:-main}
-
-# Fetch full history for proper diff
 git fetch origin "$BASE_BRANCH"
-
-# Compute merge base to compare changes
 MERGE_BASE=$(git merge-base HEAD origin/$BASE_BRANCH)
-
-# Get changed files relative to merge base
 changed_files=$(git diff --name-only "$MERGE_BASE" HEAD)
 
-# Extract unique exercise directories (practice/*/<slug> or concept/*/<slug>)
 changed_exercises=$(echo "$changed_files" | \
   grep -E '^exercises/(practice|concept)/[^/]+/.+\.(java|json|gradle)$' | \
   cut -d/ -f1-3 | sort -u)
@@ -27,18 +21,28 @@ echo "Changed exercises detected:"
 echo "$changed_exercises"
 echo
 
-# Run tests for each changed exercise
 exit_code=0
-for dir in $changed_exercises; do
-  slug=$(basename "$dir")
-  echo "=== Running tests for $slug ==="
 
-  # Run Gradle test for this exercise
-  if [[ -f "$dir/build.gradle" || -f "$dir/build.gradle.kts" ]]; then
-    ./gradlew --continue -p "$dir" test || exit_code=$?
-  else
-    echo "No build.gradle found for $slug, skipping..."
-  fi
+function run_test_runner() {
+    local slug=$1
+    local solution_dir=$2
+    local output_dir=$3
+
+    docker run \
+        --rm \
+        --network none \
+        --mount type=bind,src="${solution_dir}",dst=/solution \
+        --mount type=bind,src="${output_dir}",dst=/output \
+        --tmpfs /tmp:rw \
+        exercism/java-test-runner "${slug}" "/solution" "/output"
+}
+
+for dir in $changed_exercises; do
+    slug=$(basename "$dir")
+    output_dir="${dir}/build"
+    mkdir -p "$output_dir"
+    echo "=== Running tests for $slug ==="
+    run_test_runner "$slug" "$dir" "$output_dir" || exit_code=1
 done
 
 exit $exit_code
