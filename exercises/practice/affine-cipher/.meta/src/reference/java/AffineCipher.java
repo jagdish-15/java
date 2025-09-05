@@ -3,8 +3,6 @@ import java.util.List;
 
 
 
-jhbjhj
-
 
 
 class AffineCipher {
