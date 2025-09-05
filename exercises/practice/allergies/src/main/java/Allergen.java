@@ -8,6 +8,9 @@ enum Allergen {
     POLLEN(64),
     CATS(128);
 
+
+
+
     private final int score;
 
     Allergen(int score) {
