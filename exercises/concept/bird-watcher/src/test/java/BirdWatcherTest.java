@@ -49,6 +49,10 @@ public class BirdWatcherTest {
         assertThat(birdWatcher.getToday()).isEqualTo(TODAY + 1);
     }
 
+
+
+
+
     @Test
     @Tag("task:4")
     @DisplayName("The hasDayWithoutBirds method returns true when day had no visits")
