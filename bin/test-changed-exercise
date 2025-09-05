@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-docker pull exercism/java-test-runner
-
+# Determine the base branch of the PR
 BASE_BRANCH=${GITHUB_BASE_REF:-main}
+
+# Fetch full history for proper diff
 git fetch origin "$BASE_BRANCH"
+
+# Compute merge base
 MERGE_BASE=$(git merge-base HEAD origin/$BASE_BRANCH)
+
+# Get changed files relative to merge base
 changed_files=$(git diff --name-only "$MERGE_BASE" HEAD)
 
+# Extract unique exercise directories
 changed_exercises=$(echo "$changed_files" | \
   grep -E '^exercises/(practice|concept)/[^/]+/.+\.(java|json|gradle)$' | \
   cut -d/ -f1-3 | sort -u)
@@ -21,28 +27,22 @@ echo "Changed exercises detected:"
 echo "$changed_exercises"
 echo
 
-exit_code=0
+# Root Gradle wrapper
+GRADLE_WRAPPER="./gradlew"
 
-function run_test_runner() {
-    local slug=$1
-    local solution_dir=$2
-    local output_dir=$3
-
-    docker run \
-        --rm \
-        --network none \
-        --mount type=bind,src="${solution_dir}",dst=/solution \
-        --mount type=bind,src="${output_dir}",dst=/output \
-        --tmpfs /tmp:rw \
-        exercism/java-test-runner "${slug}" "/solution" "/output"
-}
-
+# Verify each changed exercise
 for dir in $changed_exercises; do
-    slug=$(basename "$dir")
-    output_dir="${dir}/build"
-    mkdir -p "$output_dir"
-    echo "=== Running tests for $slug ==="
-    run_test_runner "$slug" "$dir" "$output_dir" || exit_code=1
+  slug=$(basename "$dir")
+  # Convert path to Gradle subproject notation: exercises:practice:allergies
+  gradle_project=$(echo "$dir" | tr / :)
+
+  echo "=== Running tests for $slug ==="
+  if [[ $dir == exercises/practice/* || $dir == exercises/concept/* ]]; then
+    $GRADLE_WRAPPER ":$gradle_project:test"
+  else
+    echo "Skipping unknown directory: $dir"
+  fi
+  echo
 done
 
-exit $exit_code
+echo "All changed exercises tested."
