@@ -15,7 +15,7 @@ changed_files=$(git diff --name-only "$MERGE_BASE" HEAD)
 
 # Extract unique exercise directories
 changed_exercises=$(echo "$changed_files" | \
-  grep -E '^exercises/(practice|concept)/[^/]+/.+\.(java|json|gradle)$' | \
+  grep -E '^exercises/(practice|concept)/[^/]+/.+\.(java|gradle)$' | \
   cut -d/ -f1-3 | sort -u)
 
 if [ -z "$changed_exercises" ]; then
@@ -23,22 +23,22 @@ if [ -z "$changed_exercises" ]; then
   exit 0
 fi
 
-echo
+echo ""
 echo "Changed exercises detected:"
 echo "$changed_exercises"
 echo "----------------------------------------"
-echo
+echo ""
 
 # Run tests for each changed exercise
 for dir in $changed_exercises; do
   slug=$(basename "$dir")
-  echo
+  echo ""
   echo "=== Running tests for $slug ==="
   if [[ $dir == exercises/practice/* ]]; then
     ./exercises/gradlew -p exercises ":practice:$slug:test"
   elif [[ $dir == exercises/concept/* ]]; then
     ./exercises/gradlew -p exercises ":concept:$slug:test"
   fi
-  echo
+  echo ""
   echo "----------------------------------------"
 done
