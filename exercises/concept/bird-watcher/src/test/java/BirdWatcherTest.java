@@ -5,6 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 
 import static org.assertj.core.api.Assertions.*;
 
+
+
+
 public class BirdWatcherTest {
 
     private static final int DAY1 = 0;
