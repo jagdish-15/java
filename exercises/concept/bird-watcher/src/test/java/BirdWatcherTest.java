@@ -18,6 +18,10 @@ public class BirdWatcherTest {
     private static final int DAY6 = 8;
     private static final int TODAY = 4;
 
+
+
+
+
     private BirdWatcher birdWatcher;
     private final int[] lastWeek = {DAY1, DAY2, DAY3, DAY4, DAY5, DAY6, TODAY};
 
