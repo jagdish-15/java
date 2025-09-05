@@ -5,6 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 
 import static org.assertj.core.api.Assertions.*;
 
+
+
+
 public class BirdWatcherTest {
 
     private static final int DAY1 = 0;
@@ -45,6 +48,10 @@ public class BirdWatcherTest {
         birdWatcher.incrementTodaysCount();
         assertThat(birdWatcher.getToday()).isEqualTo(TODAY + 1);
     }
+
+
+
+
 
     @Test
     @Tag("task:4")
