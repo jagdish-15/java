@@ -12,7 +12,6 @@ public class AffineCipherTest {
 
 
 
-
     
     @Test
     @DisplayName("encode yes")
