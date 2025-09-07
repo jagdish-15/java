@@ -7,6 +7,10 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class BaseConverterTest {
 
+
+
+
+
     @Test
     @DisplayName("single bit one to decimal")
     public void testSingleBitOneToDecimal() {

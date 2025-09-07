@@ -10,6 +10,7 @@ def generatedTestSourceDir = "build/gen/test/java"
 
 subprojects {
 
+  
   apply plugin: "checkstyle"
 
   // Add a task that copies test source files into a build directory.
