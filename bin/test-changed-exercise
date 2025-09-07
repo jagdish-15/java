@@ -1,21 +1,22 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-# Determine the base branch of the PR
 BASE_BRANCH=${GITHUB_BASE_REF:-main}
-
-# Fetch full history for proper diff
 git fetch origin "$BASE_BRANCH"
-
-# Compute merge base
 MERGE_BASE=$(git merge-base HEAD origin/$BASE_BRANCH)
 
-# Get changed files relative to merge base
 changed_files=$(git diff --name-only "$MERGE_BASE" HEAD)
 
-# Extract unique exercise directories
+# If any gradle file changed, run the global script
+if echo "$changed_files" | grep -q '\.gradle$'; then
+  echo "Gradle build files changed, running full test suite..."
+  ./exercises/gradlew -p exercises test
+  exit 0
+fi
+
+# Otherwise, run tests only for changed exercises
 changed_exercises=$(echo "$changed_files" | \
-  grep -E '^exercises/(practice|concept)/[^/]+/.+\.(java|json|gradle)$' | \
+  grep -E '^exercises/(practice|concept)/[^/]+/.+\.java$' | \
   cut -d/ -f1-3 | sort -u)
 
 if [ -z "$changed_exercises" ]; then
@@ -23,19 +24,20 @@ if [ -z "$changed_exercises" ]; then
   exit 0
 fi
 
-# Source original verify_exercise script
-source ./bin/test-with-test-runner
+echo "Changed exercises detected:"
+echo "$changed_exercises"
+echo "----------------------------------------"
 
-# Run verify_exercise for each changed exercise
 for dir in $changed_exercises; do
   slug=$(basename "$dir")
+
+  echo "========================================"
+  echo "=== Running tests for $slug ==="
+  echo "========================================"
+
   if [[ $dir == exercises/practice/* ]]; then
-    echo "Checking $slug (practice)..."
-    verify_exercise "$dir" "example" "practice"
+    ./exercises/gradlew -p exercises ":practice:$slug:test"
   elif [[ $dir == exercises/concept/* ]]; then
-    echo "Checking $slug (concept)..."
-    verify_exercise "$dir" "exemplar" "concept"
+    ./exercises/gradlew -p exercises ":concept:$slug:test"
   fi
 done
-
-exit ${exit_code:-0}
