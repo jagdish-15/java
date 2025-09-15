@@ -12,7 +12,7 @@ public class BaseConverterTest {
     public void testSingleBitOneToDecimal() {
         BaseConverter baseConverter = new BaseConverter(2, new int[]{1});
 
-        assertThat(baseConverter.convertToBase(10))
+        assertThat(baseConverter.convertToBase())
                 .containsExactly(1);
     }
 
