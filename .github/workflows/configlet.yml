@@ -1,4 +1,4 @@
-name: Configlet
+name: Configl
 
 on:
   pull_request:
