@@ -16,7 +16,7 @@ public class AnagramTest {
 
         assertThat(
                 detector.match(
-                        Arrays.asList("hello", "world", "zombies", "pants")))
+                        Arrays.asList("helo", "world", "zombies", "pants")))
                 .isEmpty();
     }
 
