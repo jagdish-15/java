@@ -11,7 +11,7 @@ public class DoublyLinkedListTest {
     public void popGetsElementFromTheList() {
         DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
 
-        list.push(7);
+        list.push(1);
 
         assertThat(list.pop()).isEqualTo(7);
     }
