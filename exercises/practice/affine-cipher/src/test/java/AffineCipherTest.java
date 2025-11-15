@@ -12,7 +12,7 @@ public class AffineCipherTest {
     @Test
     @DisplayName("encode yes")
     public void testEncodeYes() {
-        assertThat(affineCipher.encode("yes", 5, 7)).isEqualTo("xbt");
+        assertThat(affineCipher.encode("yes", 5)).isEqualTo("xbt");
     }
 
     @Disabled("Remove to run test")
