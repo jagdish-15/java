@@ -10,7 +10,7 @@ public class AffineCipherTest {
     private AffineCipher affineCipher = new AffineCipher();
 
     @Test
-    @DisplayName("encode yes"")
+    @DisplayName("encode yes")
     public void testEncodeYes() {
         assertThat(affineCipher.encode(5, 7)).isEqualTo("xbt");
     }
