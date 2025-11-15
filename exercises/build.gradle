@@ -8,6 +8,7 @@
 
 def generatedTestSourceDir = "build/gen/test/java"
 
+
 subprojects {
 
   apply plugin: "checkstyle"
