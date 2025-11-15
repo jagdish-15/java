@@ -9,7 +9,6 @@ public class AffineCipherTest {
 
     private AffineCipher affineCipher = new AffineCipher();
 
-
     @Test
     @DisplayName("encode yes")
     public void testEncodeYes() {
