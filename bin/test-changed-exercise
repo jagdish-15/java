@@ -62,7 +62,7 @@ for dir in $changed_exercises; do
     exit_code=1
 
     # Determine practice/slug or concept/slug
-    relative_path=$(echo "$dir" | sed -E 's|.*/exercises/||')
+    relative_path=$(echo "$dir" | sed 's|^exercises/||')
 
     # Create summary.txt with header only on first failure
     if [ ! -f "$summary_file" ]; then
