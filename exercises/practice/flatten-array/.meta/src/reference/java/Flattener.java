@@ -9,7 +9,7 @@ class Flattener {
         for (Object element: list) {
             if (element instanceof List<?> listAsElement) {
                 flattenedList.addAll(flatten(listAsElement));
-            } else if (element == null) {
+            } else if (element != null) {
                 flattenedList.add(element);
             }
         }
