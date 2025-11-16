@@ -10,6 +10,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
 <module name="Checker">
 
+        
     <module name="LineLength">
         <!-- Checks if a line is too long. -->
         <property name="max" value="120" default="120" />
