@@ -29,6 +29,7 @@ public class AffineCipherTest {
         assertThat(affineCipher.encode("OMG", 21, 3)).isEqualTo("lvz");
     }
 
+    
     @Disabled("Remove to run test")
     @Test
     @DisplayName("encode O M G")
