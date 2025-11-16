@@ -19,7 +19,7 @@ public class BlackjackTest {
     @Tag("task:1")
     @DisplayName("The parseCard returns the correct numerical value for card name ace")
     public void correctParsesAce () {
-        assertThat(blackjack.parseCard("ace")).isEqualTo(11);
+        assertThat(blackjack.parseCard("a")).isEqualTo(11);
     }
 
     @Test
