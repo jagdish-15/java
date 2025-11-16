@@ -3,7 +3,7 @@ import java.util.List;
 
 class AffineCipher {
     private static final int GROUP_SIZE = 5;
-    private static final int ALPHABET_SIZE = 6;
+    private static final int ALPHABET_SIZE = 26;
     private static final int ALPHABET_START_UNICODE = 97;
 
     private enum Mode {
