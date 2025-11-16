@@ -16,6 +16,7 @@ class AffineCipher {
                 translate(plainMessage, keyA, keyB, Mode.ENCODE));
     }
 
+    
     String decode(String cipheredMessage, int keyA, int keyB) {
         return translate(cipheredMessage, keyA, keyB, Mode.DECODE);
     }
