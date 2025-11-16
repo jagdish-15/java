@@ -10,6 +10,7 @@ enum Allergen {
 
     private final int score;
 
+    
     Allergen(int score) {
         this.score = score;
     }
