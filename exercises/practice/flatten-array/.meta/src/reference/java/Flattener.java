@@ -3,6 +3,7 @@ import java.util.List;
 
 class Flattener {
 
+    
     List<Object> flatten(List<?> list) {
         List<Object> flattenedList = new ArrayList<>();
         for (Object element: list) {
