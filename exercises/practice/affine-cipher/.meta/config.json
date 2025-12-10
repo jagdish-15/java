@@ -15,6 +15,7 @@
       "src/main/java/AffineCipher.java"
     ],
     "test": [
+      
       "src/test/java/AffineCipherTest.java"
     ],
     "example": [
