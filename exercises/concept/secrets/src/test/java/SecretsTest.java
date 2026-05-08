@@ -10,7 +10,8 @@ public class SecretsTest {
     @Tag("task:1")
     @DisplayName("shift 8 back 2 places")
     public void shift8Back2Places() {
-        assertThat(Secrets.shiftBack(8, 2))                                                                                        .isEqualTo(2);
+        assertThat(Secrets.shiftBack(8, 2))
+            .isEqualTo(2);
     }
 
 
