@@ -4,6 +4,7 @@ class CaptainsLog {
 
     private static final char[] PLANET_CLASSES = new char[]{'D', 'H', 'J', 'K', 'L', 'M', 'N', 'R', 'T', 'Y'};
 
+    
     private final Random random;
 
     CaptainsLog(Random random) {
