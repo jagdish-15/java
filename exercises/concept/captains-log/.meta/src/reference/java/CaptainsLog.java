@@ -11,6 +11,7 @@ class CaptainsLog {
         this.random = random;
     }
 
+    
     char randomPlanetClass() {
         var index = random.nextInt(PLANET_CLASSES.length);
         return PLANET_CLASSES[index];
