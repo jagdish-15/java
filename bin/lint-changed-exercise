@@ -5,11 +5,11 @@ source "$(dirname "$0")/common.sh"
 
 # If any Gradle build file changed, run the full suite and exit
 check_gradle_changes \
-  "cd exercises && ./gradlew compileStarterTestJava --continue" \
-  "Gradle build files changed, running full build suite..."
+  "cd exercises && ./gradlew check --exclude-task test --continue" \
+  "Gradle build files changed, running full lint suite..."
 
 if [ -z "$changed_exercises" ]; then
-  echo "No relevant exercises changed, skipping compile checks."
+  echo "No relevant exercises changed, skipping linting."
   exit 0
 fi
 
@@ -18,19 +18,19 @@ echo "Changed exercises detected:"
 echo "$changed_exercises"
 echo "----------------------------------------"
 
-# Run build compile checks
+# Run lint checks
 exit_code=0
 for dir in $changed_exercises; do
   slug=$(basename "$dir")
 
   echo "========================================"
-  echo "=== Running compileStarterTestJava for $slug ==="
+  echo "=== Running checkstyle for $slug ==="
   echo "========================================"
 
   if [[ $dir == exercises/practice/* ]]; then
-    ./exercises/gradlew -p exercises ":practice:$slug:compileStarterTestJava" || exit_code=1
+    ./exercises/gradlew -p exercises ":practice:$slug:check" --exclude-task test || exit_code=1
   elif [[ $dir == exercises/concept/* ]]; then
-    ./exercises/gradlew -p exercises ":concept:$slug:compileStarterTestJava" || exit_code=1
+    ./exercises/gradlew -p exercises ":concept:$slug:check" --exclude-task test || exit_code=1
   fi
 done
 
