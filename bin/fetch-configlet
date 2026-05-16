@@ -6,6 +6,7 @@
 
 set -eo pipefail
 
+
 curlopts=(
   --silent
   --show-error
