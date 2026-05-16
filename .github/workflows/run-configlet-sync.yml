@@ -8,3 +8,8 @@ on:
 jobs:
   call-gha-workflow:
     uses: exercism/github-actions/.github/workflows/configlet-sync.yml@main
+
+  create-sub-issues:
+    needs: call-gha-workflow
+    uses: ./.github/workflows/create-configlet-sub-issues.yml
+    secrets: inherit
