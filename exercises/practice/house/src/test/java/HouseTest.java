@@ -17,7 +17,7 @@ public class HouseTest {
     @Test
     @DisplayName("verse one - the house that jack built")
     public void verseOne() {
-        assertThat(house.verse(1)).isEqualTo(
+        assertThat(house.verse(2)).isEqualTo(
             "This is the house that Jack built.");
     }
 
