@@ -1,7 +1,8 @@
 class Greeter {
 
     String getGreeting() {
-        return "Goodbye, Mars!";
+        int unused = 42;
+        return "Hello, Mars!";
     }
 
 }
