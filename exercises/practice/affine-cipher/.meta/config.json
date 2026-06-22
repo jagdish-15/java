@@ -7,7 +7,7 @@
     "jmrunkle",
     "msomji",
     "muzimuzhi",
-    "SleeplessByte",
+    "SleeplesByte",
     "sshine"
   ],
   "files": {
@@ -15,6 +15,7 @@
       "src/main/java/AffineCipher.java"
     ],
     "test": [
+      
       "src/test/java/AffineCipherTest.java"
     ],
     "example": [

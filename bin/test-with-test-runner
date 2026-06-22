@@ -8,6 +8,7 @@
 
 set -eo pipefail
 
+
 docker pull exercism/java-test-runner
 
 exit_code=0
