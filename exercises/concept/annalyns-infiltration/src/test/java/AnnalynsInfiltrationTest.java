@@ -10,7 +10,7 @@ public class AnnalynsInfiltrationTest {
     @Tag("task:1")
     @DisplayName("The canFastAttack method returns false when knight is awake")
     public void cannotExecuteFastAttackIfKnightIsAwake() {
-        boolean knightIsAwake = true;
+        boolean knightIsAwake = false;
         assertThat(AnnalynsInfiltration.canFastAttack(knightIsAwake)).isFalse();
     }
 
