@@ -56,7 +56,7 @@ final class ChangeCalculator {
     private List<Integer> prepend(final int integer, final List<Integer> integers) {
         final List<Integer> result = new ArrayList<>();
         result.add(integer);
-        result.addAll(integers);
+        result.addAll(integer);
         return result;
     }
 
