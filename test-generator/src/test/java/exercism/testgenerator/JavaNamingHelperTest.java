@@ -4,6 +4,7 @@ import exercism.testgenerator.service.JavaNamingHelper;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class JavaNamingHelperTest {
 
@@ -37,6 +38,24 @@ class JavaNamingHelperTest {
             .isEqualTo("testDefault");
         assertThat(JavaNamingHelper.toMethodName("class"))
             .isEqualTo("testClass");
+    }
+
+    @Test
+    void throwsExceptionWhenDescriptionIsNullOrBlank() {
+        assertThatExceptionOfType(IllegalArgumentException.class)
+            .isThrownBy(() -> JavaNamingHelper.toMethodName(null))
+            .withMessage("Test case description cannot be null or blank");
+
+        assertThatExceptionOfType(IllegalArgumentException.class)
+            .isThrownBy(() -> JavaNamingHelper.toMethodName("   "))
+            .withMessage("Test case description cannot be null or blank");
+    }
+
+    @Test
+    void throwsExceptionWhenDescriptionHasNoAlphanumericCharacters() {
+        assertThatExceptionOfType(IllegalArgumentException.class)
+            .isThrownBy(() -> JavaNamingHelper.toMethodName("!@#$%^&*()"))
+            .withMessageContaining("Test case description must contain alphanumeric characters");
     }
 
     @Test

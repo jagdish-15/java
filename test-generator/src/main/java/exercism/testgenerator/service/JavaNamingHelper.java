@@ -17,7 +17,7 @@ public class JavaNamingHelper {
 
     public static String toMethodName(String description) {
         if (description == null || description.isBlank()) {
-            return "testMethod";
+            throw new IllegalArgumentException("Test case description cannot be null or blank");
         }
 
         // Replace non-alphanumeric characters with spaces
@@ -32,7 +32,7 @@ public class JavaNamingHelper {
 
         String[] parts = cleaned.toString().trim().split("\\s+");
         if (parts.length == 0 || parts[0].isEmpty()) {
-            return "testMethod";
+            throw new IllegalArgumentException("Test case description must contain alphanumeric characters: " + description);
         }
 
         StringBuilder methodName = new StringBuilder();
