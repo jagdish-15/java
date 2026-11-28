@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SimpleCipherTest {
+
     private Cipher randomKeyCipher;
     private Cipher substitutionCipher = new Cipher("abcdefghij");
 
@@ -14,12 +15,8 @@ public class SimpleCipherTest {
         randomKeyCipher = new Cipher();
     }
 
-    /**
-     * Here we take advantage of the fact that plaintext of "aaa..." doesn't output the key. This is a critical
-     * problem with shift ciphers, some characters will always output the key verbatim.
-     */
     @Test
-    @DisplayName("Can encode")
+    @DisplayName("Random key cipher -> Can encode")
     public void randomKeyCipherCanEncode() {
         String plainText = "aaaaaaaaaa";
         String cipherText = randomKeyCipher.getKey().substring(0, 10);
@@ -28,95 +25,99 @@ public class SimpleCipherTest {
 
     @Disabled("Remove to run test")
     @Test
-    @DisplayName("Can decode")
+    @DisplayName("Random key cipher -> Can decode")
     public void randomKeyCipherCanDecode() {
         String cipherText = "aaaaaaaaaa";
         assertThat(randomKeyCipher.decode(randomKeyCipher.getKey().substring(0, 10)))
-            .isEqualTo(cipherText);
+                .isEqualTo(cipherText);
     }
 
     @Disabled("Remove to run test")
     @Test
-    @DisplayName(
-        "Is reversible. I.e., if you apply decode in a encoded result, " +
-        "you must see the same plaintext encode parameter as a result of the decode method"
-    )
-    public void randomKeyCipherIsReversible() {
+    @DisplayName("Random key cipher -> Is reversible. I.e., if you apply decode in a "
+            + "encoded result, you must see the same plaintext encode parameter as a "
+            + "result of the decode method")
+    public void randomKeyCipherIsReversibleIEIfYouApplyDecodeInAEncodedResultYouM() {
         String plainText = "abcdefghij";
-        assertThat(randomKeyCipher.decode(randomKeyCipher.encode(plainText))).isEqualTo(plainText);
+        assertThat(randomKeyCipher.decode(randomKeyCipher.encode(plainText)))
+                .isEqualTo(plainText);
     }
 
     @Disabled("Remove to run test")
     @Test
-    @DisplayName("Key is made only of lowercase letters")
-    public void randomKeyCipherKeyIsLowercaseLetters() {
+    @DisplayName("Random key cipher -> Key is made only of lowercase letters")
+    public void randomKeyCipherKeyIsMadeOnlyOfLowercaseLetters() {
         assertThat(randomKeyCipher.getKey()).matches("^[a-z]+$");
     }
 
     @Disabled("Remove to run test")
     @Test
-    @DisplayName("Can encode")
+    @DisplayName("Substitution cipher -> Can encode")
     public void substitutionCipherCanEncode() {
         String plainText = "aaaaaaaaaa";
-        String cipherText = "abcdefghij";
-        assertThat(substitutionCipher.encode(plainText)).isEqualTo(cipherText);
+        assertThat(substitutionCipher.encode(plainText)).isEqualTo("abcdefghij");
     }
 
     @Disabled("Remove to run test")
     @Test
-    @DisplayName("Can decode")
+    @DisplayName("Substitution cipher -> Can decode")
     public void substitutionCipherCanDecode() {
-        String plainText = "abcdefghij";
-        String cipherText = "aaaaaaaaaa";
-        assertThat(substitutionCipher.decode(plainText)).isEqualTo(cipherText);
+        String plainText = "aaaaaaaaaa";
+        assertThat(substitutionCipher.decode("abcdefghij"))
+                .isEqualTo(plainText);
     }
 
     @Disabled("Remove to run test")
     @Test
-    @DisplayName(
-        "Is reversible. I.e., if you apply decode in a encoded result, " +
-        "you must see the same plaintext encode parameter as a result of the decode method"
-    )
-    public void substitutionCipherIsReversibleGivenKey() {
+    @DisplayName("Substitution cipher -> Is reversible. I.e., if you apply decode in a "
+            + "encoded result, you must see the same plaintext encode parameter as a "
+            + "result of the decode method")
+    public void substitutionCipherIsReversibleIEIfYouApplyDecodeInAEncodedResultY() {
         String plainText = "abcdefghij";
-        assertThat(substitutionCipher.decode(substitutionCipher.encode(plainText))).isEqualTo(plainText);
+        assertThat(substitutionCipher.decode(substitutionCipher.encode(plainText)))
+                .isEqualTo(plainText);
     }
 
     @Disabled("Remove to run test")
     @Test
-    @DisplayName("Can double shift encode")
+    @DisplayName("Substitution cipher -> Can double shift encode")
     public void substitutionCipherCanDoubleShiftEncode() {
         String plainText = "iamapandabear";
-        String cipherText = "qayaeaagaciai";
-        assertThat(new Cipher(plainText).encode(plainText)).isEqualTo(cipherText);
+        assertThat(new Cipher("iamapandabear").encode(plainText)).isEqualTo("qayaeaagaciai");
     }
 
     @Disabled("Remove to run test")
     @Test
-    @DisplayName("Can wrap on encode")
-    public void substitutionCipherCanWrapEncode() {
+    @DisplayName("Substitution cipher -> Can wrap on encode")
+    public void substitutionCipherCanWrapOnEncode() {
         String plainText = "zzzzzzzzzz";
-        String cipherText = "zabcdefghi";
-        assertThat(substitutionCipher.encode(plainText)).isEqualTo(cipherText);
+        assertThat(substitutionCipher.encode(plainText)).isEqualTo("zabcdefghi");
     }
 
     @Disabled("Remove to run test")
     @Test
-    @DisplayName("Can wrap on decode")
-    public void substitutionCipherCanWrapDecode() {
-        String plainText = "zabcdefghi";
-        String cipherText = "zzzzzzzzzz";
-        assertThat(substitutionCipher.decode(plainText)).isEqualTo(cipherText);
+    @DisplayName("Substitution cipher -> Can wrap on decode")
+    public void substitutionCipherCanWrapOnDecode() {
+        String plainText = "zzzzzzzzzz";
+        assertThat(substitutionCipher.decode("zabcdefghi"))
+                .isEqualTo(plainText);
     }
 
     @Disabled("Remove to run test")
     @Test
-    @DisplayName("Can decode messages longer than the key")
-    public void substitutionCipherMessageLongerThanKey() {
+    @DisplayName("Substitution cipher -> Can encode messages longer than the key")
+    public void substitutionCipherCanEncodeMessagesLongerThanTheKey() {
         String plainText = "iamapandabear";
-        String key = "abc";
-        String cipherText = "iboaqcnecbfcr";
-        assertThat(new Cipher(key).encode(plainText)).isEqualTo(cipherText);
+        assertThat(new Cipher("abc").encode(plainText)).isEqualTo("iboaqcnecbfcr");
     }
-}
 
+    @Disabled("Remove to run test")
+    @Test
+    @DisplayName("Substitution cipher -> Can decode messages longer than the key")
+    public void substitutionCipherCanDecodeMessagesLongerThanTheKey() {
+        String plainText = "iamapandabear";
+        assertThat(new Cipher("abc").decode("iboaqcnecbfcr"))
+                .isEqualTo(plainText);
+    }
+
+}
